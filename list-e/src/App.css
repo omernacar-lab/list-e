@@ -1,0 +1,285 @@
+/* 1. RENK VE GENEL AYARLAR */
+:root {
+  --ana-yesil: #2ecc71;
+  --koyu-yesil: #27ae60;
+  --arka-plan: #f0f2f5;
+  --metin: #2c3e50;
+  --golge: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+body {
+  background-color: var(--arka-plan);
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.App {
+  max-width: 420px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: var(--golge);
+  min-height: 90vh;
+}
+
+/* 2. YENİ ÜST BAR (SEPET VE ÇIKIŞ) */
+.ust-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.ana-baslik {
+  color: var(--koyu-yesil);
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.cikis-btn {
+  background: #f8f9fa;
+  border: 1px solid #eee;
+  color: #95a5a6;
+  padding: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.room-info {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  background: #f1f2f6;
+  padding: 4px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  margin: -10px auto 20px auto;
+}
+
+/* 3. GİRİŞ EKRANI (ODA SEÇİMİ) */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-top: 50px;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.login-box input {
+  padding: 15px;
+  border-radius: 15px;
+  border: 2px solid #eee;
+  font-size: 1.1rem;
+  text-align: center;
+  outline: none;
+}
+
+.login-box input:focus {
+  border-color: var(--ana-yesil);
+}
+
+.login-box button {
+  padding: 15px;
+  background: var(--ana-yesil);
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+/* 4. EKLEME FORMU */
+.input-grubu {
+  display: flex;
+  background: #f8f9fa;
+  padding: 6px;
+  border-radius: 18px;
+  border: 2px solid #eee;
+  margin-bottom: 25px;
+}
+
+.urun-input {
+  flex: 3;
+  border: none !important;
+  background: transparent;
+  padding: 12px;
+  outline: none;
+}
+
+.miktar-input {
+  flex: 1;
+  border: none !important;
+  border-left: 1px solid #ddd !important;
+  background: transparent;
+  text-align: center;
+  outline: none;
+}
+
+.ekle-buton {
+  background: var(--ana-yesil);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* 5. LİSTE VE ÖGELER */
+.section h3 {
+  font-size: 0.9rem;
+  color: #95a5a6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.item {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  border: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.item:hover {
+  background: #fff5f5;
+  border-color: #fab1a0;
+}
+
+.quick-adds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-adds button {
+  background: #f1f8e9;
+  color: var(--koyu-yesil);
+  border: 1px dashed var(--ana-yesil);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bos-uyari {
+  text-align: center;
+  color: #bdc3c7;
+  font-style: italic;
+  margin-top: 40px;
+}
+.item.cizili {
+  text-decoration: line-through;
+  color: #bdc3c7;
+  opacity: 0.5;
+}
+
+.urun-metin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.urun-isim {
+  font-weight: 500;
+  background-color: #f9f9f9;
+  transform: scale(0.95);
+  transition: all 0.5s ease;
+}
+
+/* HOME COMPONENT STYLES */
+.app-container {
+  padding: 20px;
+  padding-top: 80px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.action-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.brand-name {
+  font-size: 3rem;
+  color: #2e7d32;
+  font-weight: 800;
+  margin: 10px 0 0 0;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 350px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.primary-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.code-box {
+  margin-top: 15px;
+  background: #e8f5e9;
+  border: 2px dashed #4CAF50;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.code-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 3px;
+  color: #1b5e20;
+}

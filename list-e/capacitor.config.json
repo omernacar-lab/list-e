@@ -1,0 +1,6 @@
+{
+  "appId": "com.liste.app",
+  "appName": "List-e",
+  "webDir": "build",
+  "bundledWebRuntime": false
+}
