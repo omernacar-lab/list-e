@@ -14,7 +14,8 @@
       "buildNumber": "1.0.0",
       "infoPlist": {
         "NSCameraUsageDescription": "Ürün fotoğrafı eklemek için kamera erişimi gereklidir.",
-        "NSPhotoLibraryUsageDescription": "Ürün fotoğrafı seçmek için galeri erişimi gereklidir."
+        "NSPhotoLibraryUsageDescription": "Ürün fotoğrafı seçmek için galeri erişimi gereklidir.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -56,9 +57,11 @@
       "reactCompiler": true
     },
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": "your-project-id-here"
+        "projectId": "d76a6909-e78f-493b-a106-b04d7519c2ee"
       }
-    }
+    },
+    "owner": "namelessone03"
   }
 }

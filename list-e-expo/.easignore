@@ -1,0 +1,56 @@
+# dependencies
+**/node_modules/**
+node_modules
+
+# Expo
+.expo
+.expo/
+dist
+dist/
+web-build
+web-build/
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+
+# local env files
+.env*.local
+.env
+
+# typescript
+*.tsbuildinfo
+
+# build outputs
+build
+build/
+
+# IDE
+.vscode
+.vscode/
+.idea
+.idea/
+
+# git
+.git
+.git/
+.gitignore
+.gitattributes
+
+# firebase
+.firebaserc
+
+# docs
+*.md
+!README.md
+
+# tests
+**/__tests__/**
+**/*.test.ts
+**/*.test.tsx
+**/*.test.js
+**/*.test.jsx
