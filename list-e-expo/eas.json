@@ -20,7 +20,11 @@
       },
       "android": {
         "buildType": "apk"
-      }
+      },
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "prebuildCommand": "rm -rf node_modules || true"
     }
   },
   "submit": {
