@@ -1,0 +1,15 @@
+# Eski React projesi
+list-e/
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Git
+.git/
+
+# Vercel
+.vercel/
+
+# Env files
+.env*.local
