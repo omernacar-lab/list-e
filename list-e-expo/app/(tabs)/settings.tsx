@@ -98,7 +98,7 @@ export default function SettingsScreen() {
       <View style={styles.section}>
         <TouchableOpacity 
           style={styles.card} 
-          onPress={() => openLink('https://omernacar-lab.github.io/list-e/', 'Gizlilik Politikası')}
+          onPress={() => openLink('https://omernacar-lab.github.io/List-e/privacy.html', 'Gizlilik Politikası')}
         >
           <View style={styles.cardHeader}>
             <Shield size={24} color={Colors.primary} />
