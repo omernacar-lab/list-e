@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List-e — Smart Shopping List for Families</title>
+    <meta name="description" content="Create shared shopping lists, sync instantly with your family, and never forget an item again. Available on the App Store.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-200: #bbf7d0;
+            --green-400: #4ade80;
+            --green-500: #22c55e;
+            --green-600: #16a34a;
+            --green-700: #15803d;
+            --green-800: #166534;
+            --green-900: #14532d;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--gray-800);
+            background: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 1px 30px rgba(0,0,0,0.06);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            color: var(--green-800);
+        }
+
+        .nav-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-logo span {
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--green-700);
+        }
+
+        .nav-cta {
+            background: var(--green-700) !important;
+            color: var(--white) !important;
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600 !important;
+            transition: transform 0.3s, box-shadow 0.3s !important;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(22,163,74,0.3);
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 80%;
+            height: 120%;
+            background: radial-gradient(ellipse, rgba(34,197,94,0.12) 0%, transparent 70%);
+            animation: float-bg 8s ease-in-out infinite alternate;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -10%;
+            width: 60%;
+            height: 80%;
+            background: radial-gradient(ellipse, rgba(74,222,128,0.08) 0%, transparent 70%);
+            animation: float-bg 10s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes float-bg {
+            from { transform: translate(0, 0) rotate(0deg); }
+            to { transform: translate(30px, -20px) rotate(3deg); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            animation: fade-up 1s ease-out;
+        }
+
+        @keyframes fade-up {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--green-50);
+            border: 1px solid var(--green-200);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--green-700);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green-500);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            line-height: 1.1;
+            color: var(--gray-900);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 em {
+            color: var(--green-600);
+            font-style: italic;
+        }
+
+        .hero-desc {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: var(--gray-500);
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-appstore {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--gray-900);
+            color: var(--white);
+            padding: 0.9rem 1.8rem;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-appstore:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .btn-appstore svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn-appstore .small-text {
+            font-size: 0.7rem;
+            font-weight: 400;
+            opacity: 0.8;
+            display: block;
+            line-height: 1;
+        }
+
+        .btn-appstore .big-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: block;
+            line-height: 1.2;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--green-700);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray-400);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.2rem;
+        }
+
+        .hero-phone {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fade-up 1s ease-out 0.3s both;
+        }
+
+        .phone-wrapper {
+            position: relative;
+        }
+
+        .phone-wrapper img {
+            width: 340px;
+            max-width: 100%;
+            border-radius: 36px;
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.12),
+                0 8px 20px rgba(0,0,0,0.06);
+            transition: transform 0.5s ease;
+        }
+
+        .phone-wrapper:hover img {
+            transform: translateY(-8px) rotate(1deg);
+        }
+
+        .phone-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 500px;
+            background: radial-gradient(ellipse, rgba(34,197,94,0.15), transparent 70%);
+            z-index: -1;
+            filter: blur(40px);
+        }
+
+        /* ── FEATURES ── */
+        .features {
+            padding: 8rem 2rem;
+            background: var(--gray-50);
+            position: relative;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--green-200), transparent);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--green-600);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--gray-500);
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .features-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid var(--gray-100);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green-400), var(--green-600));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: var(--green-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+            color: var(--gray-900);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--gray-500);
+            line-height: 1.65;
+        }
+
+        /* ── HOW IT WORKS ── */
+        .how-it-works {
+            padding: 8rem 2rem;
+        }
+
+        .steps {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 30px;
+            bottom: 30px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--green-200), var(--green-500), var(--green-200));
+        }
+
+        .step {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            padding: 2rem 0;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            border-radius: 50%;
+            background: var(--green-600);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(22,163,74,0.3);
+        }
+
+        .step-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: var(--gray-500);
+            line-height: 1.65;
+            font-size: 1rem;
+        }
+
+        /* ── CTA ── */
+        .cta {
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box {
+            max-width: 700px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, var(--green-700), var(--green-900));
+            border-radius: 28px;
+            padding: 4rem 3rem;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 60%;
+            height: 150%;
+            background: radial-gradient(ellipse, rgba(255,255,255,0.08), transparent 60%);
+        }
+
+        .cta-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .cta-box p {
+            opacity: 0.85;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .btn-appstore-light {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.7rem;
+            background: var(--white);
+            color: var(--gray-900);
+            padding: 0.9rem 2rem;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .btn-appstore-light:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--gray-100);
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-500);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--green-600);
+        }
+
+        .footer-copy {
+            color: var(--gray-400);
+            font-size: 0.85rem;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding-top: 7rem;
+            }
+
+            .hero-desc {
+                margin: 0 auto 2.5rem;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-phone {
+                order: -1;
+            }
+
+            .phone-wrapper img {
+                width: 260px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .steps::before {
+                left: 22px;
+            }
+
+            .step-number {
+                width: 46px;
+                height: 46px;
+                min-width: 46px;
+                font-size: 1rem;
+            }
+
+            .step {
+                gap: 1.2rem;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+            <svg viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="10" fill="#16a34a"/>
+                <path d="M12 14h16M12 20h12M12 26h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="28" cy="26" r="3" fill="#4ade80"/>
+            </svg>
+            <span>List-e</span>
+        </a>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how">How It Works</a>
+            <a href="https://omernacar-lab.github.io/list-e/" target="_blank">Privacy</a>
+            <a href="https://apps.apple.com/app/id6757700571" target="_blank" class="nav-cta">Download</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <span class="dot"></span>
+                    Now with English support
+                </div>
+                <h1>Shopping made <em>simple</em> for&nbsp;families</h1>
+                <p class="hero-desc">Create a shared shopping list in seconds. Tap a code, share it with your partner, and never forget an item again.</p>
+                <div class="hero-actions">
+                    <a href="https://apps.apple.com/app/id6757700571" target="_blank" class="btn-appstore">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                        <div>
+                            <span class="small-text">Download on the</span>
+                            <span class="big-text">App Store</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">1-Tap</div>
+                        <div class="stat-label">Add Items</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">Real-time</div>
+                        <div class="stat-label">Sync</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">Free</div>
+                        <div class="stat-label">To Use</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-phone">
+                <div class="phone-wrapper">
+                    <div class="phone-glow"></div>
+                    <img src="list-e_1.png" alt="List-e App Screenshot">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <span class="section-tag">Features</span>
+            <h2>Everything You Need, Nothing You Don't</h2>
+            <p>Built for real families who just want shopping to be easy.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛒</div>
+                <h3>One-Tap Add & Remove</h3>
+                <p>Add items to your list with a single tap. Check them off just as easily while you shop.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👨‍👩‍👧</div>
+                <h3>Share with a Code</h3>
+                <p>Generate a 6-digit code and share it with your partner or family. No sign-up needed for them.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Real-Time Sync</h3>
+                <p>See items appear instantly as your partner adds them — even while you're already at the store.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Multiple Rooms</h3>
+                <p>Create separate lists for different stores, categories, or occasions. Stay perfectly organized.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>Turkish & English</h3>
+                <p>Use the app in your preferred language. Full support for both Turkish and English interfaces.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">✨</div>
+                <h3>Clean & Simple</h3>
+                <p>No clutter, no ads, no confusion. A beautifully simple interface that anyone can use.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works" id="how">
+        <div class="section-header">
+            <span class="section-tag">How It Works</span>
+            <h2>Ready in 3 Steps</h2>
+            <p>From download to shared shopping in under a minute.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Create a Room</h3>
+                    <p>Open List-e and tap "Create Room" to start a new shared list. You'll get a unique 6-digit code instantly.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Share the Code</h3>
+                    <p>Send the code to your partner, family member, or roommate. They enter it in the app and join your room.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Shop Together</h3>
+                    <p>Start adding items! Everyone in the room sees updates in real time. Check off items as you go.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="cta-box">
+            <h2>Never Forget an Item Again</h2>
+            <p>Join families who've made shopping stress-free with List-e.</p>
+            <a href="https://apps.apple.com/app/id6757700571" target="_blank" class="btn-appstore-light">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                Download on the App Store
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <span class="footer-copy">&copy; 2025 List-e. Made with care by Ömer Nacar.</span>
+            <div class="footer-links">
+                <a href="https://omernacar-lab.github.io/list-e/" target="_blank">Privacy Policy</a>
+                <a href="mailto:omernacar@example.com">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Intersection Observer for fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card, .step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
